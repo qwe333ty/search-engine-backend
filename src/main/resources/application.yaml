@@ -1,0 +1,16 @@
+spring:
+  elasticsearch:
+    rest:
+      uris: ${ELASTIC_URIS}
+      username: ${ELASTIC_USERNAME}
+      password: ${ELASTIC_PASSWORD}
+      read-timeout: ${ELASTIC_READ_TIMEOUT}
+      connection-timeout: ${ELASTIC_READ_TIMEOUT}
+    info:
+      template-name: arah
+      template-pattern: arah-*
+      index-name: arah-articles
+      mapping: classpath:mapping/article.yaml
+
+application:
+  clean-install: ${CLEAN_INSTALL_ENABLED}
