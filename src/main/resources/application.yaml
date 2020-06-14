@@ -12,5 +12,8 @@ spring:
       index-name: arah-articles
       mapping: classpath:mapping/article.yaml
 
+server:
+  port: ${APP_PORT}
+
 application:
   clean-install: ${CLEAN_INSTALL_ENABLED}
