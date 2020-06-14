@@ -7,9 +7,9 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class Pair<L, R> {
 
-    private L left;
+    private final L left;
 
-    private R right;
+    private final R right;
 
     public Pair(L left, R right) {
         this.left = left;

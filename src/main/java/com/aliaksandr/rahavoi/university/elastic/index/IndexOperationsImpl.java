@@ -6,6 +6,7 @@ import com.aliaksandr.rahavoi.university.shared.exception.elastic.DeleteIndexExc
 import com.aliaksandr.rahavoi.university.shared.exception.elastic.DeleteIndexTemplateException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.admin.cluster.storedscripts.PutStoredScriptRequest;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.admin.indices.template.delete.DeleteIndexTemplateRequest;
 import org.elasticsearch.client.RequestOptions;

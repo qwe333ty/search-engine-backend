@@ -20,10 +20,14 @@ public class RatingServiceImpl implements RatingService {
     @Override
     public Float recalculateRating(RecalculateRatingDto dto) {
         Article article = this.repository.findById(dto.getArticleId());
+
         Pair<Float, Long> pair = this.ratingEngine.recalculateRating(
                 article.getScores(), article.getVotes(), dto.getUserEstimation());
         article.setScores(pair.getLeft());
         article.setVotes(pair.getRight());
+
+        Float newRating = this.ratingEngine.calculateRating(pair.getLeft(), pair.getRight());
+        article.setRating(newRating);
         return this.repository.save(article).getRating();
     }
 }

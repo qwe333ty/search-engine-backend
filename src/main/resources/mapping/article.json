@@ -3,17 +3,32 @@
     "properties": {
       "header": {
         "type": "text",
-        "analyzer": "russian"
+        "analyzer": "english",
+        "fields": {
+          "ru": {
+            "type": "text",
+            "analyzer": "russian"
+          }
+        }
       },
       "message": {
         "type": "text",
-        "analyzer": "russian"
+        "analyzer": "english",
+        "fields": {
+          "ru": {
+            "type": "text",
+            "analyzer": "russian"
+          }
+        }
       },
       "score": {
-        "type": "float"
+        "type": "half_float"
       },
       "votes": {
         "type": "long"
+      },
+      "rating": {
+        "type": "half_float"
       },
       "created_when": {
         "type": "date"

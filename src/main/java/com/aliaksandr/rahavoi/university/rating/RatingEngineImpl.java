@@ -14,10 +14,7 @@ public class RatingEngineImpl implements RatingEngine {
     public Float calculateRating(Float scores, Long votes) {
         if (scores != null && votes != null) {
             Pair<Float, Long> initialValues = initialScoresAndVotes();
-            // если очки ИЛИ голоса равны начальным,
-            // то возвращаем начальный рейтинг
-            if (initialValues.getLeft().equals(scores) ||
-                    initialValues.getRight().equals(votes)) {
+            if (initialValues.getRight().equals(votes)) {
                 return initialRating();
             }
             return scores / votes;

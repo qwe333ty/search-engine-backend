@@ -1,6 +1,8 @@
 package com.aliaksandr.rahavoi.university.elastic.repository;
 
 import com.aliaksandr.rahavoi.university.elastic.model.ElasticArticle;
+import com.aliaksandr.rahavoi.university.elastic.search.SearchQueryProvider;
+import com.aliaksandr.rahavoi.university.elastic.search.SourceBuilder;
 import com.aliaksandr.rahavoi.university.model.Article;
 import com.aliaksandr.rahavoi.university.shared.exception.elastic.DeleteObjectException;
 import com.aliaksandr.rahavoi.university.shared.exception.elastic.ExistsObjectException;
@@ -12,15 +14,22 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -47,7 +56,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
                 new TypeReference<Map<String, Object>>() {
                 }
         );
-        final UpdateRequest updateRequest = new UpdateRequest(indexName, id);
+        final UpdateRequest updateRequest = new UpdateRequest(this.indexName, id);
         updateRequest.upsertRequest()
                 .id(id)
                 .source(sourceMap, XContentType.JSON);
@@ -55,7 +64,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
             this.elasticClient.update(updateRequest, RequestOptions.DEFAULT);
         } catch (IOException e) {
             log.error("Occurred exception during saving to index {} next object: id={}, source={}",
-                    indexName, id, elasticArticle);
+                    this.indexName, id, elasticArticle);
             throw new SaveObjectException(e);
         }
         return article;
@@ -67,19 +76,39 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         try {
             this.elasticClient.delete(deleteRequest, RequestOptions.DEFAULT);
         } catch (IOException e) {
-            log.error("Occurred exception during deleting object with id={} from {} index", id, indexName);
+            log.error("Occurred exception during deleting object with id={} from {} index", id, this.indexName);
             throw new DeleteObjectException(e);
         }
     }
 
     @Override
-    public List<Article> search() {
-        return null;
+    public List<Article> search(String searchText, Map<String, Collection<Object>> terms) {
+        final QueryBuilder query = SearchQueryProvider.ftsAndFilters(searchText, terms);
+        final SearchSourceBuilder sourceBuilder = SourceBuilder.build(query);
+
+        final SearchRequest searchRequest = new SearchRequest(this.indexName);
+        searchRequest.source(sourceBuilder);
+        List<Article> articles = new ArrayList<>();
+        try {
+            final SearchResponse searchResponse = this.elasticClient.search(searchRequest, RequestOptions.DEFAULT);
+            final SearchHit[] hits = searchResponse.getHits().getHits();
+            for (SearchHit hit : hits) {
+                final ElasticArticle elasticArticle =
+                        this.objectMapper.convertValue(hit.getSourceAsMap(), ElasticArticle.class);
+                elasticArticle.setId(hit.getId());
+                final Article article = this.conversionService.convert(elasticArticle, Article.class);
+                articles.add(article);
+            }
+        } catch (IOException e) {
+            log.error("Occurred exception during searching with text={} and terms={}", searchText, terms);
+            throw new ExistsObjectException(e);
+        }
+        return articles;
     }
 
     @Override
     public boolean existsById(String id) {
-        GetRequest getRequest = new GetRequest(indexName);
+        GetRequest getRequest = new GetRequest(this.indexName);
         getRequest.id(id);
         try {
             return this.elasticClient.exists(getRequest, RequestOptions.DEFAULT);
@@ -91,7 +120,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public Article findById(String id) {
-        GetRequest getRequest = new GetRequest(indexName);
+        GetRequest getRequest = new GetRequest(this.indexName);
         getRequest.id(id);
         try {
             GetResponse response = this.elasticClient.get(getRequest, RequestOptions.DEFAULT);

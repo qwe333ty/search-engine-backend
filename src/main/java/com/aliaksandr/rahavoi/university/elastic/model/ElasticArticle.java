@@ -26,6 +26,9 @@ public class ElasticArticle {
     @JsonProperty("votes")
     private Long votes;
 
+    @JsonProperty("rating")
+    private Float rating;
+
     @JsonProperty("created_when")
     private OffsetDateTime createdWhen;
 

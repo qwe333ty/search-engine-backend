@@ -7,6 +7,7 @@ import com.aliaksandr.rahavoi.university.elastic.repository.ArticleRepository;
 import com.aliaksandr.rahavoi.university.model.Article;
 import com.aliaksandr.rahavoi.university.rating.RatingEngine;
 import com.aliaksandr.rahavoi.university.service.ArticleService;
+import com.aliaksandr.rahavoi.university.shared.Pair;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,11 @@ public class ArticleServiceImpl implements ArticleService {
         article.setMessage(dto.getMessage());
         article.setCreatedWhen(OffsetDateTime.now(ZoneOffset.UTC));
         article.setRating(this.ratingEngine.initialRating());
+
+        Pair<Float, Long> initialValues = this.ratingEngine.initialScoresAndVotes();
+        article.setScores(initialValues.getLeft());
+        article.setVotes(initialValues.getRight());
+
         return this.repository.save(article);
     }
 
@@ -48,12 +54,12 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Article getArticleById(String articleId) {
-        return null;
+        return this.repository.findById(articleId);
     }
 
     @Override
     public List<Article> searchArticles(SearchArticlesDto dto) {
-        return null;
+        return this.repository.search(dto.getSearchText(), dto.getTerms());
     }
 
     @Override

@@ -11,6 +11,8 @@ spring:
       template-pattern: arah-*
       index-name: arah-articles
       mapping: classpath:mapping/article.json
+      rating-script: "if (doc['score'].value == 0.0F || doc['votes'].value == 0L) { return 0.0F; } else { return (doc['score'].value / doc['votes'].value); }"
+      rating-script-name: calculate-rating
 
 server:
   port: ${APP_PORT}

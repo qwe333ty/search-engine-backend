@@ -28,19 +28,9 @@ public class Rest2ElasticConverter implements Converter<Article, ElasticArticle>
         elastic.setCreatedWhen(rest.getCreatedWhen());
         elastic.setUpdatedWhen(rest.getUpdatedWhen());
         elastic.setOriginalDate(rest.getOriginalDate());
-
         elastic.setScore(rest.getScores());
         elastic.setVotes(rest.getVotes());
-
-        if (this.ratingEngine.initialRating().equals(rest.getRating())) {
-            Pair<Float, Long> initialValues = this.ratingEngine.initialScoresAndVotes();
-            elastic.setScore(initialValues.getLeft());
-            elastic.setVotes(initialValues.getRight());
-        }
-        // если уже есть значение рейтинга, то его
-        // обновление произоводится отдельно
-        // через Rest API
-
+        elastic.setRating(rest.getRating());
         return elastic;
     }
 }
