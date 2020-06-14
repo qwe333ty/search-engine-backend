@@ -1,0 +1,29 @@
+{
+  "mappings": {
+    "properties": {
+      "header": {
+        "type": "text",
+        "analyzer": "russian"
+      },
+      "message": {
+        "type": "text",
+        "analyzer": "russian"
+      },
+      "score": {
+        "type": "float"
+      },
+      "votes": {
+        "type": "long"
+      },
+      "created_when": {
+        "type": "date"
+      },
+      "updated_when": {
+        "type": "date"
+      },
+      "original_date": {
+        "type": "date"
+      }
+    }
+  }
+}

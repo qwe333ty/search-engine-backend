@@ -1,5 +1,7 @@
 package com.aliaksandr.rahavoi.university.elastic.mapping;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -24,7 +26,8 @@ public class MappingProvider implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         InputStream mappingStream = this.mappingResource.getInputStream();
-        this.articleMapping = new Yaml().load(mappingStream);
+        this.articleMapping = new ObjectMapper().readValue(mappingStream, new TypeReference<Map<String, Object>>() {
+        });
     }
 
     public Map<String, Object> provideArticleMapping() {

@@ -10,7 +10,7 @@ spring:
       template-name: arah
       template-pattern: arah-*
       index-name: arah-articles
-      mapping: classpath:mapping/article.yaml
+      mapping: classpath:mapping/article.json
 
 server:
   port: ${APP_PORT}
