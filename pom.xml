@@ -16,7 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <elasticsearch-rest-client.verion>7.7.1</elasticsearch-rest-client.verion>
+        <elasticsearch.verion>7.7.1</elasticsearch.verion>
         <tika.version>1.24.1</tika.version>
     </properties>
 
@@ -28,7 +28,12 @@
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
-            <version>${elasticsearch-rest-client.verion}</version>
+            <version>${elasticsearch.verion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>${elasticsearch.verion}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tika</groupId>

@@ -1,21 +1,19 @@
 spring:
   elasticsearch:
     rest:
-      uris: ${ELASTIC_URIS}
-      username: ${ELASTIC_USERNAME}
-      password: ${ELASTIC_PASSWORD}
-      read-timeout: ${ELASTIC_READ_TIMEOUT}
-      connection-timeout: ${ELASTIC_READ_TIMEOUT}
+      uris: ${ELASTIC_URIS:http://localhost:9200}
+      username: ${ELASTIC_USERNAME:}
+      password: ${ELASTIC_PASSWORD:}
+      read-timeout: ${ELASTIC_READ_TIMEOUT:30s}
+      connection-timeout: ${ELASTIC_READ_TIMEOUT:3s}
     info:
       template-name: arah
       template-pattern: arah-*
       index-name: arah-articles
       mapping: classpath:mapping/article.json
-      rating-script: "if (doc['score'].value == 0.0F || doc['votes'].value == 0L) { return 0.0F; } else { return (doc['score'].value / doc['votes'].value); }"
-      rating-script-name: calculate-rating
 
 server:
-  port: ${APP_PORT}
+  port: ${APP_PORT:8080}
 
 application:
-  clean-install: ${CLEAN_INSTALL_ENABLED}
+  clean-install: ${CLEAN_INSTALL_ENABLED:false}

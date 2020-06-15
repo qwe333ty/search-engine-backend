@@ -6,7 +6,9 @@ import java.util.Map;
 
 public interface CrudRepository<T, ID> {
 
-    <S extends T> S save(S object);
+    T create(T object);
+
+    T update(T object);
 
     void deleteById(ID id);
 

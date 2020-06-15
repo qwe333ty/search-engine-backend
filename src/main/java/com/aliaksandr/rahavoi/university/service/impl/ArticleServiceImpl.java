@@ -38,7 +38,7 @@ public class ArticleServiceImpl implements ArticleService {
         article.setScores(initialValues.getLeft());
         article.setVotes(initialValues.getRight());
 
-        return this.repository.save(article);
+        return this.repository.create(article);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ArticleServiceImpl implements ArticleService {
         article.setMessage(dto.getMessage());
         article.setOriginalDate(dto.getOriginalDate());
         article.setUpdatedWhen(OffsetDateTime.now(ZoneOffset.UTC));
-        return this.repository.save(article);
+        return this.repository.update(article);
     }
 
     @Override

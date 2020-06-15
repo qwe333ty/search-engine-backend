@@ -11,25 +11,25 @@ import java.time.OffsetDateTime;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Article {
 
-    @JsonProperty("id")
+    @JsonProperty("_id")
     private String id;
 
-    @JsonProperty("header")
+    @JsonProperty("_header")
     private String header;
 
-    @JsonProperty("message")
+    @JsonProperty("_message")
     private String message;
 
-    @JsonProperty("rating")
+    @JsonProperty("_rating")
     private Float rating;
 
-    @JsonProperty("createdWhen")
+    @JsonProperty("_createdWhen")
     private OffsetDateTime createdWhen;
 
-    @JsonProperty("updatedWhen")
+    @JsonProperty("_updatedWhen")
     private OffsetDateTime updatedWhen;
 
-    @JsonProperty("originalDate")
+    @JsonProperty("_originalDate")
     private OffsetDateTime originalDate;
 
     //обязательное поля для конвертации из ElasticArticle модели

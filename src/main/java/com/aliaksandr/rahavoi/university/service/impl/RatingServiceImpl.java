@@ -28,6 +28,6 @@ public class RatingServiceImpl implements RatingService {
 
         Float newRating = this.ratingEngine.calculateRating(pair.getLeft(), pair.getRight());
         article.setRating(newRating);
-        return this.repository.save(article).getRating();
+        return this.repository.update(article).getRating();
     }
 }

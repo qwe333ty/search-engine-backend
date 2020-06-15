@@ -32,10 +32,11 @@ public final class IndexesInitializer implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        if (Boolean.TRUE.equals(cleanInstallEnabled)) {
-            log.info("Clean install mode enabled");
-            cleanElastic();
+        if (Boolean.FALSE.equals(cleanInstallEnabled)) {
+            return;
         }
+        log.info("Clean install mode enabled");
+        cleanElastic();
         updateTemplatesAndIndexes();
     }
 

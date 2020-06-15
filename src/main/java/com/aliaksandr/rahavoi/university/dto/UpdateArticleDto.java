@@ -8,12 +8,12 @@ import java.time.OffsetDateTime;
 @Data
 public class UpdateArticleDto {
 
-    @JsonProperty("header")
+    @JsonProperty("_header")
     private String header;
 
-    @JsonProperty("message")
+    @JsonProperty("_message")
     private String message;
 
-    @JsonProperty("originalDate")
+    @JsonProperty("_originalDate")
     private OffsetDateTime originalDate;
 }

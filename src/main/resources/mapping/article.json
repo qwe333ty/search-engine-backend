@@ -1,44 +1,42 @@
 {
-  "mappings": {
-    "properties": {
-      "header": {
-        "type": "text",
-        "analyzer": "english",
-        "fields": {
-          "ru": {
-            "type": "text",
-            "analyzer": "russian"
-          }
+  "properties": {
+    "header": {
+      "type": "text",
+      "analyzer": "english",
+      "fields": {
+        "ru": {
+          "type": "text",
+          "analyzer": "russian"
         }
-      },
-      "message": {
-        "type": "text",
-        "analyzer": "english",
-        "fields": {
-          "ru": {
-            "type": "text",
-            "analyzer": "russian"
-          }
-        }
-      },
-      "score": {
-        "type": "half_float"
-      },
-      "votes": {
-        "type": "long"
-      },
-      "rating": {
-        "type": "half_float"
-      },
-      "created_when": {
-        "type": "date"
-      },
-      "updated_when": {
-        "type": "date"
-      },
-      "original_date": {
-        "type": "date"
       }
+    },
+    "message": {
+      "type": "text",
+      "analyzer": "english",
+      "fields": {
+        "ru": {
+          "type": "text",
+          "analyzer": "russian"
+        }
+      }
+    },
+    "score": {
+      "type": "half_float"
+    },
+    "votes": {
+      "type": "long"
+    },
+    "rating": {
+      "type": "half_float"
+    },
+    "created_when": {
+      "type": "date"
+    },
+    "updated_when": {
+      "type": "date"
+    },
+    "original_date": {
+      "type": "date"
     }
   }
 }

@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateRequest;
@@ -48,18 +49,39 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     private String indexName;
 
     @Override
-    public Article save(Article article) {
-        final String id = article.getId();
-        final ElasticArticle elasticArticle = this.conversionService.convert(article, ElasticArticle.class);
+    public Article create(Article object) {
+        final String id = object.getId();
+        final ElasticArticle elasticArticle = this.conversionService.convert(object, ElasticArticle.class);
+        final Map<String, Object> sourceMap = this.objectMapper.convertValue(
+                elasticArticle,
+                new TypeReference<Map<String, Object>>() {
+                }
+        );
+
+        final IndexRequest indexRequest = new IndexRequest(this.indexName);
+        indexRequest.id(object.getId());
+        indexRequest.source(sourceMap);
+        try {
+            this.elasticClient.index(indexRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            log.error("Occurred exception during creating object: id={}, source={} in index {}",
+                    id, elasticArticle, this.indexName);
+            throw new SaveObjectException(e);
+        }
+        return object;
+    }
+
+    @Override
+    public Article update(Article object) {
+        final String id = object.getId();
+        final ElasticArticle elasticArticle = this.conversionService.convert(object, ElasticArticle.class);
         final Map<String, Object> sourceMap = this.objectMapper.convertValue(
                 elasticArticle,
                 new TypeReference<Map<String, Object>>() {
                 }
         );
         final UpdateRequest updateRequest = new UpdateRequest(this.indexName, id);
-        updateRequest.upsertRequest()
-                .id(id)
-                .source(sourceMap, XContentType.JSON);
+        updateRequest.doc(sourceMap, XContentType.JSON);
         try {
             this.elasticClient.update(updateRequest, RequestOptions.DEFAULT);
         } catch (IOException e) {
@@ -67,8 +89,9 @@ public class ArticleRepositoryImpl implements ArticleRepository {
                     this.indexName, id, elasticArticle);
             throw new SaveObjectException(e);
         }
-        return article;
+        return object;
     }
+
 
     @Override
     public void deleteById(String id) {

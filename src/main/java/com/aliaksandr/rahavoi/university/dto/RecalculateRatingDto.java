@@ -6,9 +6,9 @@ import lombok.Data;
 @Data
 public class RecalculateRatingDto {
 
-    @JsonProperty("articleId")
+    @JsonProperty("_articleId")
     private String articleId;
 
-    @JsonProperty("userEstimation")
+    @JsonProperty("_userEstimation")
     private Float userEstimation;
 }
