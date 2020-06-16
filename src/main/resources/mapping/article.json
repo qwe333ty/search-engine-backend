@@ -30,13 +30,16 @@
       "type": "half_float"
     },
     "created_when": {
-      "type": "date"
+      "type": "date",
+      "format": "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
     },
     "updated_when": {
-      "type": "date"
+      "type": "date",
+      "format": "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
     },
     "original_date": {
-      "type": "date"
+      "type": "date",
+      "format": "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
     }
   }
 }

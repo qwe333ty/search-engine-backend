@@ -5,32 +5,32 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Article {
 
-    @JsonProperty("_id")
+    @JsonProperty("id")
     private String id;
 
-    @JsonProperty("_header")
+    @JsonProperty("header")
     private String header;
 
-    @JsonProperty("_message")
+    @JsonProperty("message")
     private String message;
 
-    @JsonProperty("_rating")
+    @JsonProperty("rating")
     private Float rating;
 
-    @JsonProperty("_createdWhen")
-    private OffsetDateTime createdWhen;
+    @JsonProperty("createdWhen")
+    private LocalDateTime createdWhen;
 
-    @JsonProperty("_updatedWhen")
-    private OffsetDateTime updatedWhen;
+    @JsonProperty("updatedWhen")
+    private LocalDateTime updatedWhen;
 
-    @JsonProperty("_originalDate")
-    private OffsetDateTime originalDate;
+    @JsonProperty("originalDate")
+    private LocalDateTime originalDate;
 
     //обязательное поля для конвертации из ElasticArticle модели
     //метаданные

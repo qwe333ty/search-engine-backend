@@ -15,6 +15,7 @@ import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateRequest;
@@ -27,6 +28,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,7 +43,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     private final RestHighLevelClient elasticClient;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
     private final ConversionService conversionService;
 
@@ -63,12 +65,12 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         indexRequest.source(sourceMap);
         try {
             this.elasticClient.index(indexRequest, RequestOptions.DEFAULT);
+            return object;
         } catch (IOException e) {
             log.error("Occurred exception during creating object: id={}, source={} in index {}",
                     id, elasticArticle, this.indexName);
             throw new SaveObjectException(e);
         }
-        return object;
     }
 
     @Override
@@ -84,12 +86,12 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         updateRequest.doc(sourceMap, XContentType.JSON);
         try {
             this.elasticClient.update(updateRequest, RequestOptions.DEFAULT);
+            return object;
         } catch (IOException e) {
             log.error("Occurred exception during saving to index {} next object: id={}, source={}",
                     this.indexName, id, elasticArticle);
             throw new SaveObjectException(e);
         }
-        return object;
     }
 
 

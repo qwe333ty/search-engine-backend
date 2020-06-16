@@ -1,6 +1,7 @@
 package com.aliaksandr.rahavoi.university.web;
 
 import com.aliaksandr.rahavoi.university.dto.RecalculateRatingDto;
+import com.aliaksandr.rahavoi.university.model.Article;
 import com.aliaksandr.rahavoi.university.service.RatingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,9 +19,9 @@ public class RatingController {
     private final RatingService ratingService;
 
     @PostMapping("/recalculate")
-    public ResponseEntity<Float> recalculateRating(@RequestBody RecalculateRatingDto dto) {
-        Float rating = this.ratingService.recalculateRating(dto);
-        return new ResponseEntity<>(rating, HttpStatus.OK);
+    public ResponseEntity<Article> recalculateRating(@RequestBody RecalculateRatingDto dto) {
+        Article updatedArticle = this.ratingService.recalculateRating(dto);
+        return new ResponseEntity<>(updatedArticle, HttpStatus.OK);
     }
 
 }

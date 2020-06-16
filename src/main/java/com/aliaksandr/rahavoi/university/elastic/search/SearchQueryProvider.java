@@ -1,8 +1,5 @@
 package com.aliaksandr.rahavoi.university.elastic.search;
 
-import org.apache.tika.langdetect.OptimaizeLangDetector;
-import org.apache.tika.language.detect.LanguageDetector;
-import org.apache.tika.language.detect.LanguageResult;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -16,19 +13,17 @@ import java.util.Map;
 
 public final class SearchQueryProvider {
 
-    private static final String DEFAULT_LANGUAGE = "en";
-
-    private static final String FIELD_NAME_TEMPLATE = "%s.%s";
-
-    private static final LanguageDetector LANGUAGE_DETECTOR = new OptimaizeLangDetector().loadModels();
-
     private static final String HEADER = "header";
 
     private static final String MESSAGE = "message";
 
+    private static final String FIELD_NAME_TEMPLATE = "%s.%s";
+
     private static final String[] DEFAULT_FIELDS = new String[]{
             HEADER,
-            MESSAGE
+            MESSAGE,
+            String.format(FIELD_NAME_TEMPLATE, HEADER, "ru"),
+            String.format(FIELD_NAME_TEMPLATE, MESSAGE, "ru")
     };
 
     private SearchQueryProvider() {
@@ -51,14 +46,7 @@ public final class SearchQueryProvider {
         if (searchText == null || searchText.isEmpty()) {
             return null;
         }
-        final String[] searchFields;
-        final LanguageResult languageResult = LANGUAGE_DETECTOR.detect(searchText);
-        if (languageResult.isUnknown()) {
-            searchFields = DEFAULT_FIELDS;
-        } else {
-            searchFields = appendLanguagePostfix(languageResult.getLanguage());
-        }
-        return QueryBuilders.multiMatchQuery(searchText, searchFields)
+        return QueryBuilders.multiMatchQuery(searchText, DEFAULT_FIELDS)
                 .type(MultiMatchQueryBuilder.Type.MOST_FIELDS);
     }
 
@@ -72,15 +60,5 @@ public final class SearchQueryProvider {
             boolQuery.must(rangeQ);
         }
         return boolQuery;
-    }
-
-    private static String[] appendLanguagePostfix(String language) {
-        if (DEFAULT_LANGUAGE.equals(language)) {
-            return DEFAULT_FIELDS;
-        }
-        return new String[]{
-                String.format(FIELD_NAME_TEMPLATE, HEADER, language),
-                String.format(FIELD_NAME_TEMPLATE, MESSAGE, language)
-        };
     }
 }

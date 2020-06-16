@@ -18,7 +18,7 @@ public class RatingServiceImpl implements RatingService {
     private final RatingEngine ratingEngine;
 
     @Override
-    public Float recalculateRating(RecalculateRatingDto dto) {
+    public Article recalculateRating(RecalculateRatingDto dto) {
         Article article = this.repository.findById(dto.getArticleId());
 
         Pair<Float, Long> pair = this.ratingEngine.recalculateRating(
@@ -28,6 +28,6 @@ public class RatingServiceImpl implements RatingService {
 
         Float newRating = this.ratingEngine.calculateRating(pair.getLeft(), pair.getRight());
         article.setRating(newRating);
-        return this.repository.update(article).getRating();
+        return this.repository.update(article);
     }
 }

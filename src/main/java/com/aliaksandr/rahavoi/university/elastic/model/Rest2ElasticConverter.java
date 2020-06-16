@@ -23,6 +23,7 @@ public class Rest2ElasticConverter implements Converter<Article, ElasticArticle>
     @Override
     public ElasticArticle convert(Article rest) {
         ElasticArticle elastic = new ElasticArticle();
+        elastic.setId(rest.getId());
         elastic.setHeader(rest.getHeader());
         elastic.setMessage(rest.getMessage());
         elastic.setCreatedWhen(rest.getCreatedWhen());

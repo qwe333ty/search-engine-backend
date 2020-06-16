@@ -11,8 +11,11 @@ import com.aliaksandr.rahavoi.university.shared.Pair;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,7 +34,7 @@ public class ArticleServiceImpl implements ArticleService {
         article.setOriginalDate(dto.getOriginalDate());
         article.setHeader(dto.getHeader());
         article.setMessage(dto.getMessage());
-        article.setCreatedWhen(OffsetDateTime.now(ZoneOffset.UTC));
+        article.setCreatedWhen(LocalDateTime.from(new Date().toInstant().atZone(ZoneId.of("UTC"))));
         article.setRating(this.ratingEngine.initialRating());
 
         Pair<Float, Long> initialValues = this.ratingEngine.initialScoresAndVotes();
@@ -48,7 +51,7 @@ public class ArticleServiceImpl implements ArticleService {
         article.setHeader(dto.getHeader());
         article.setMessage(dto.getMessage());
         article.setOriginalDate(dto.getOriginalDate());
-        article.setUpdatedWhen(OffsetDateTime.now(ZoneOffset.UTC));
+        article.setUpdatedWhen(LocalDateTime.from(new Date().toInstant().atZone(ZoneId.of("UTC"))));
         return this.repository.update(article);
     }
 

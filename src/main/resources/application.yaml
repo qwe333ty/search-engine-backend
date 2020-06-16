@@ -16,4 +16,4 @@ server:
   port: ${APP_PORT:8080}
 
 application:
-  clean-install: ${CLEAN_INSTALL_ENABLED:false}
+  clean-install: ${CLEAN_INSTALL_ENABLED:true}

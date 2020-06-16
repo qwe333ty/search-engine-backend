@@ -2,11 +2,11 @@ package com.aliaksandr.rahavoi.university.elastic.mapping;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
-import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
 import java.util.Map;
@@ -16,7 +16,10 @@ import java.util.Map;
  * доступные в приложении.
  */
 @Component
+@RequiredArgsConstructor
 public class MappingProvider implements InitializingBean {
+
+    private final ObjectMapper objectMapper;
 
     @Value("${spring.elasticsearch.info.mapping}")
     private Resource mappingResource;
@@ -26,7 +29,7 @@ public class MappingProvider implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         InputStream mappingStream = this.mappingResource.getInputStream();
-        this.articleMapping = new ObjectMapper().readValue(mappingStream, new TypeReference<Map<String, Object>>() {
+        this.articleMapping = this.objectMapper.readValue(mappingStream, new TypeReference<Map<String, Object>>() {
         });
     }
 

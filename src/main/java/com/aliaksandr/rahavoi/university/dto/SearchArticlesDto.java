@@ -9,9 +9,9 @@ import java.util.Map;
 @Data
 public class SearchArticlesDto {
 
-    @JsonProperty("_searchText")
+    @JsonProperty("searchText")
     private String searchText;
 
-    @JsonProperty("_terms")
+    @JsonProperty("terms")
     private Map<String, Collection<Object>> terms;
 }

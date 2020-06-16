@@ -1,10 +1,11 @@
 package com.aliaksandr.rahavoi.university.elastic.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 @Data
 public class ElasticArticle {
@@ -30,11 +31,11 @@ public class ElasticArticle {
     private Float rating;
 
     @JsonProperty("created_when")
-    private OffsetDateTime createdWhen;
+    private LocalDateTime createdWhen;
 
     @JsonProperty("updated_when")
-    private OffsetDateTime updatedWhen;
+    private LocalDateTime updatedWhen;
 
     @JsonProperty("original_date")
-    private OffsetDateTime originalDate;
+    private LocalDateTime originalDate;
 }
